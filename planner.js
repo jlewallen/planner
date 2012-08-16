@@ -177,8 +177,9 @@
     var self = this;
     self._dom = dom;
     self._starting = Date.parse('1/7/2011');
-    self._ending = Date.parse('1/1/2014');
+    self._ending = Date.parse('1/1/2015');
     self._period = { days: 14 };
+    self._spans = [];
 
     $.templates({
       plannerMain: "{{for years tmpl='plannerYear' /}}",
@@ -198,6 +199,11 @@
     self.addSpan({ startKey: '2011/05/13', endKey: '2011/05/13', title: 'D' });
     self.addSpan({ startKey: '2011/07/22', endKey: '2011/09/16', title: 'E' });
     self.addSpan({ startKey: '2011/12/09', endKey: '2012/01/20', title: 'F' });
+
+    function on_resize(c,t){onresize=function(){clearTimeout(t);t=setTimeout(c,100)};return c};
+    on_resize(function() {
+      self.renderAllSpans();
+    });
   };
 
   window.Planner.prototype.render = function() {
@@ -208,7 +214,15 @@
     });
   };
 
-  window.Planner.prototype.addSpan = function(spanModel) {
+  window.Planner.prototype.renderAllSpans = function() {
+    var self = this;
+    self._dom.find(".entry").remove();
+    $.each(self._spans, function(i, spanModel) {
+      self.addSpan(spanModel);
+    });
+  };
+
+  window.Planner.prototype.renderSpan = function(spanModel) {
     var self = this;
     var all = self._model.between(spanModel.startKey, spanModel.endKey);
     var spans = $();
@@ -216,8 +230,11 @@
     var previous = null;
     var borderWidth = 2;
     var topOffset = 0;
+
     $.each(all, function(i, p) {
-      p.spans.push(spanModel);
+      if (!$.inArray(spanModel, p.spans)) {
+        p.spans.push(spanModel);
+      }
 
       var position = p.dom.position();
       if (div == null || (previous != null && (position.left < previous.left || position.left - previous.left > p.dom.width() + 10))) {
@@ -238,6 +255,12 @@
     });
     
     self._dom.append(spans);
+  };
+
+  window.Planner.prototype.addSpan = function(spanModel) {
+    var self = this;
+    self.renderSpan(spanModel);
+    self._spans.push(spanModel);
   };
 
   window.Planner.prototype.selectAll = function(periods) {
