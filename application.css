@@ -1,0 +1,80 @@
+.container {
+  width: 1240px;
+}
+
+.planner {
+  clear: both;
+  height: 100%;
+}
+
+.planner .year {
+}
+
+.planner .year > .title {
+  font-weight: bold;
+  display: inline-block;
+  width: 140px;
+  float: left;
+  margin-bottom: 4px;
+  margin-right: 4px;
+  border: 1px solid #ffffff;
+}
+
+.planner .year > .title {
+  font-weight: bold;
+}
+
+.planner .period {
+  display: inline-block;
+  float: left;
+  width: 140px;
+  height: 140px;
+  border: 1px solid #adadad;
+  margin-bottom: 4px;
+  margin-right: 4px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.planner .period.selected {
+  background: #ddf;
+  font-weight: bold;
+}
+
+.planner .period.todays {
+  background: #ffa;
+}
+
+.planner .period > .title {
+  font-size: 12px;
+  margin: 2px;
+}
+
+.popup {
+  border: 1px solid #adadad;
+  background: #fff;
+  position: absolute;
+  width: 200px;
+  opacity: 0.9;
+  padding: 4px;
+}
+
+.entry {
+  background: #addfda;
+  border-width: 1px 0;
+  background-color: #3366CC;
+  border-color: #3366CC;
+  color: #FFFFFF;
+  border-style: solid;
+  font-size: 0.85em;
+  
+}
+
+.entry .title {
+  margin-left: 2px;
+}
