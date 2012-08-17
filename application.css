@@ -120,10 +120,16 @@ body {
   position: relative;
   table-layout: fixed;
   width: 100%;
+  /* Necessary for passing the mouse through to the underlying .box */
+  pointer-events: none;
 }
 
 .calendar-widget .box {
   border-left: 1px solid #DDD;
+}
+
+.calendar-widget .box.selected {
+  background: #ffa;
 }
 
 .calendar-widget .st-dtitle {
