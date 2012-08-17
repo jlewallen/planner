@@ -188,6 +188,14 @@
         selection.endIndex = idx;
         selection.endBox = box;
         refresh(selection);
+        if (selection.startIndex > selection.endIndex) {
+          selection = {
+            startIndex: selection.endIndex,
+            endIndex: selection.startIndex,
+            startBox: selection.endBox,
+            endBox: selection.startBox
+          };
+        }
         dom.trigger('cw:selected', $.extend(selection, {
           startModel: selection.startBox.data("model"),
           endModel: selection.endBox.data("model")
