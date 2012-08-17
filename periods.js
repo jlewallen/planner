@@ -6,7 +6,7 @@
     var todays = Date.today().between(starting.toDate(), moment(ending).add({days:-1}).toDate());
     var classes = todays ? "period todays" : "period";
     return {
-      title: day.format('MMM DD YYYY'),
+      title: day.format('MMMM DD YYYY'),
       key: day.format('YYYY/MM/DD'),
       starting: starting,
       ending: ending,
