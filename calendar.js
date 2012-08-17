@@ -6,8 +6,8 @@
     calendarWidgetTableGrid: "<table cellpadding='0' cellspacing='0' class='table-grid'><tbody><tr>{{for columns tmpl='calendarWidgetTableGridColumn' /}}</tr></tbody></table>",
     calendarWidgetTableMainColumn: "<td class='box'>&nbsp;</td>",
     calendarWidgetTableGridColumn: "<td class='st-dtitle'><span>{{>title}}</span></td>",
-    calendarWidgetEntryCellBox: "<div class='st-c-pos'><div class='st-ad-mpad rb-n' style='border: 1px solid {{>border}}; color: {{>text}}; background-color: {{>color}}' class='rb-ni'>{{>title}}</div></div></div>",
-    calendarWidgetEntryCellSimple: "<div class='st-c-pos'><div class='ca-evp23 te' style='color: {{>text}}'>{{>title}}</div></div>"
+    calendarWidgetEntryCellBox: "<div class='st-c-pos entry'><div class='st-ad-mpad rb-n' style='border: 1px solid {{>border}}; color: {{>text}}; background-color: {{>color}}' class='rb-ni'>{{>title}}</div></div></div>",
+    calendarWidgetEntryCellSimple: "<div class='st-c-pos entry'><div class='ca-evp23 te' style='color: {{>text}}'>{{>title}}</div></div>"
   });
 
   window.EntryRow = function(dom) {
@@ -32,10 +32,10 @@
   window.EntryRow.prototype.fill = function(s, e, model) {
     var self = this;
     var cell = $(self._cells[s]);
-    cell.html($.render.calendarWidgetEntryCellBox(model));
+    cell.html($.render.calendarWidgetEntryCellBox(model)).removeClass("empty-cell");
     for (var i = s; i <= e; ++i) {
       if (i != s) {
-        $(self._cells[i]).remove();
+        $(self._cells[i]).hide();
       }
       self._occupied[i] = true;
     }
@@ -58,7 +58,7 @@
     if (available.length == 0) {
       var tr = $("<tr></tr>");
       for (var i = 0; i < self._width; ++i) {
-        tr = tr.append("<td class='st-c st-s'>&nbsp;</td>");
+        tr = tr.append("<td class='st-c st-s empty-cell'>&nbsp;</td>");
       }
       self._dom.append(tr);
       var row = new EntryRow(tr);
@@ -79,6 +79,20 @@
     var size = 140;
     var columns = $.map(model.rows, function(r) { return r.columns; });
 
+    var styles = [
+      { border: '#93C00B', text: '#1d1d1d', color: '#5484ed' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#a4bdfc' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#46d6db' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#7ae7bf' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#51b749' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#fbd75b' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#ffb878' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#ff887c' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#b3dc6c' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#dc2127' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#dbadff' },
+      { border: '#93C00B', text: '#1d1d1d', color: '#e1e1e1' }
+    ];
     self._dom = dom;
     self._width = width;
     self._model = model;
@@ -131,32 +145,41 @@
       selected.addClass('selected');
     }
 
+    function boxFor(el) {
+      if (el.hasClass('box')) return el;
+      var i = el.parent().find("td").index(el);
+      return $(el.closest(".table-row").find(".box").get(i));
+    }
+
     var selection = null;
-    dom.on('mousedown', '.box', function(e) {
-      var idx = parseInt($(this).data('idx'));
+    dom.on('mousedown', '.box, .empty-cell', function(e) {
+      var box = boxFor($(this));
+      var idx = parseInt(box.data('idx'));
       selection = {
         startIndex: idx,
         endIndex: idx,
-        startBox: $(this),
+        startBox: box,
         endBox: null
       };
       refresh(selection);
     });
-    dom.on('mousemove', '.box', function(e) {
+    dom.on('mousemove', '.box, .empty-cell', function(e) {
       if (selection != null) {
-        var idx = parseInt($(this).data('idx'));
+        var box = boxFor($(this));
+        var idx = parseInt(box.data('idx'));
         if (selection.endIndex != idx) {
           selection.endIndex = idx;
-          selection.endBox = $(this);
+          selection.endBox = box;
           refresh(selection);
         }
       }
     });
-    dom.on('mouseup', '.box', function(e) {
+    dom.on('mouseup', '.box, .empty-cell', function(e) {
       if (selection != null) {
-        var idx = parseInt($(this).data('idx'));
+        var box = boxFor($(this));
+        var idx = parseInt(box.data('idx'));
         selection.endIndex = idx;
-        selection.endBox = $(this);
+        selection.endBox = box;
         refresh(selection);
         dom.trigger('cw:selected', $.extend(selection, {
           startModel: selection.startBox.data("model"),
@@ -164,6 +187,9 @@
         }));
         selection = null;
       }
+    });
+    dom.on('click', '.entry', function(e) {
+      e.stopPropagation();
     });
   }
 })(jQuery);
