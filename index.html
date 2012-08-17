@@ -7,15 +7,73 @@
     <script src="moment.js"></script>
     <script src="jsrender.js"></script>
     <script src="planner.js"></script>
+    <script src="calendar.js"></script>
   </head>
+  <body>
 
   <div class="container">
-    <div id="planner" class="planner"> </div>
+    <div id="planner"> </div>
+    <div id="calendarWidget"> </div>
   </div>
   
   <script type="text/javascript">
   $(function() {
-    new Planner($('#planner'));
+    // new Planner($('#planner'));
+
+    var model = {
+      rows: [
+        {
+          columns: [
+            { title: 'A' },
+            { title: 'B' },
+            { title: 'C' },
+            { title: 'D' },
+            { title: 'E' },
+            { title: 'F' },
+            { title: 'G' }
+          ]
+        },
+        {
+          columns: [
+            { title: 'A' },
+            { title: 'B' },
+            { title: 'C' },
+            { title: 'D' },
+            { title: 'E' },
+            { title: 'F' },
+            { title: 'G' }
+          ]
+        },
+        {
+          columns: [
+            { title: 'A' },
+            { title: 'B' },
+            { title: 'C' },
+            { title: 'D' },
+            { title: 'E' },
+            { title: 'F' },
+            { title: 'G' }
+          ]
+        },
+        {
+          columns: [
+            { title: 'A' },
+            { title: 'B' },
+            { title: 'C' },
+            { title: 'D' },
+            { title: 'E' },
+            { title: 'F' },
+            { title: 'G' }
+          ]
+        }
+      ]
+    };
+    var widget = new CalendarWidget($('#calendarWidget'), model);
+    widget.add({ s: 1, e:  1, text: '#777777', border: '#B3DC6C', color: '#EAF5DC', title: 'Jacob' });
+    widget.add({ s: 2, e:  2, text: '#777777', border: '#B3DC6C', color: '#EAF5DC', title: 'Andy' });
+    widget.add({ s: 3, e:  4, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Tomi' });
+    widget.add({ s: 5, e: 10, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Tomi' });
   });
   </script>
+  </body>
 </html>

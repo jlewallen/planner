@@ -182,7 +182,7 @@
     self._spans = [];
 
     $.templates({
-      plannerMain: "{{for years tmpl='plannerYear' /}}",
+      plannerMain: "<div class='planner'>{{for years tmpl='plannerYear' /}}</div>",
       plannerYear: "<div class='year'><h3 class='title'>{{>title}}</h3><div class='periods'> {{for periods tmpl='plannerPeriod' /}} </div></div>",
       plannerPeriod: "<div class='{{>classes}}' data-key='{{>key}}'><div class='title'>{{>title}}</div></div>",
       plannerSpan: "<div class='entry'><div class='title'>{{>title}}</div></div>",
