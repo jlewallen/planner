@@ -93,6 +93,7 @@
       { border: '#93C00B', text: '#1d1d1d', color: '#dbadff' },
       { border: '#93C00B', text: '#1d1d1d', color: '#e1e1e1' }
     ];
+    self._styles = styles;
     self._dom = dom;
     self._width = width;
     self._model = model;
@@ -113,6 +114,7 @@
 
   window.CalendarWidget.prototype.add = function(entryModel) {
     var self = this;
+    var styled = $.extend(entryModel, self._styles[0]);
     var row = (entryModel.s / self._width) | 0;
     var s = entryModel.s - row * self._width;
     var e = entryModel.e - row * self._width;
@@ -125,6 +127,8 @@
       e -= self._width;
       row++;
     }
+
+    self._styles.push(self._styles.shift());
   };
 
   window.CalendarSelectionManager = function(dom, boxes) {
