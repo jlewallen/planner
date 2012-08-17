@@ -19,14 +19,11 @@
   
   <script type="text/javascript">
   $(function() {
-    // new Planner($('#planner'));
-
     var starting = Date.parse('1/7/2011');
     var ending = Date.parse('1/1/2015');
     var period = { days: 14 };
     var years = Periods.createYears(starting, ending, period);
     var width = 7;
-    console.log(years);
 
     var rows = [];
     for (var i = 0; i * width < years.periods.length; ++i) {
@@ -41,7 +38,6 @@
       }
       rows.push({ columns: columns });
     }
-    console.log(rows);
 
     var model = {
       rows: rows
@@ -53,7 +49,6 @@
     widget.add({ s:  3, e:  4, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Tomi' });
     widget.add({ s: 11, e: 15, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Tomi' });
     dom.on("cw:selected", function(e, data) {
-      console.log(arguments);
       widget.add({ s: data.startIndex, e: data.endIndex, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Added' });
     });
   });

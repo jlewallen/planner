@@ -3,10 +3,10 @@
   function createPeriod(day, period) {
     var starting = day;
     var ending = day.clone().add(period);
-    var todays = Date.today().between(starting.toDate(), ending.toDate());
+    var todays = Date.today().between(starting.toDate(), moment(ending).add({days:-1}).toDate());
     var classes = todays ? "period todays" : "period";
     return {
-      title: day.format('MMM D'),
+      title: day.format('MMM DD YYYY'),
       key: day.format('YYYY/MM/DD'),
       starting: starting,
       ending: ending,

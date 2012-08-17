@@ -4,7 +4,7 @@
     calendarWidgetRow: "<div class='table-row'>{{if true tmpl='calendarWidgetTableMain'/}}{{if true tmpl='calendarWidgetTableGrid'/}}</div>",
     calendarWidgetTableMain: "<table cellpadding='0' cellspacing='0' class='table-main'><tbody><tr>{{for columns tmpl='calendarWidgetTableMainColumn' /}}</tr></tbody></table>",
     calendarWidgetTableGrid: "<table cellpadding='0' cellspacing='0' class='table-grid'><tbody><tr>{{for columns tmpl='calendarWidgetTableGridColumn' /}}</tr></tbody></table>",
-    calendarWidgetTableMainColumn: "<td class='box'>&nbsp;</td>",
+    calendarWidgetTableMainColumn: "<td class='box {{>classes}}'>&nbsp;</td>",
     calendarWidgetTableGridColumn: "<td class='st-dtitle'><span>{{>title}}</span></td>",
     calendarWidgetEntryCellBox: "<div class='st-c-pos entry'><div class='st-ad-mpad rb-n' style='border: 1px solid {{>border}}; color: {{>text}}; background-color: {{>color}}' class='rb-ni'>{{>title}}</div></div></div>",
     calendarWidgetEntryCellSimple: "<div class='st-c-pos entry'><div class='ca-evp23 te' style='color: {{>text}}'>{{>title}}</div></div>"

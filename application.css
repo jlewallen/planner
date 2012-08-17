@@ -130,7 +130,8 @@ body {
 }
 
 .calendar-widget .box.selected {
-  background: #ffa;
+  background: #ddf;
+  font-weight: bold;
 }
 
 .calendar-widget .st-dtitle {
@@ -244,4 +245,10 @@ body {
   bottom: 0;
   left: 0;
   */
+}
+
+/* Application Styling */
+
+.calendar-widget .box.todays {
+  background: #ffa;
 }
