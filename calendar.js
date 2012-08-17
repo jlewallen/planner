@@ -131,6 +131,10 @@
     var self = this;
 
     function refresh(selection) {
+      $(boxes).removeClass('selected');
+      if (selection == null)  {
+        return;
+      }
       var selected = $();
       var s = selection.startIndex;
       var e = selection.endIndex;
@@ -141,7 +145,6 @@
       for (var i = s; i <= e; ++i) {
         selected = selected.add(boxes[i]);
       }
-      $(boxes).removeClass('selected');
       selected.addClass('selected');
     }
 
@@ -190,6 +193,10 @@
     });
     dom.on('click', '.entry', function(e) {
       e.stopPropagation();
+    });
+    $('body').live('mouseup', function() {
+      selection = null;
+      refresh(null);
     });
   }
 })(jQuery);
