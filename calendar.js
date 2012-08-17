@@ -74,35 +74,96 @@
     return row.fill(entryModel.s, entryModel.e, entryModel);
   };
 
-  window.CalendarWidget = function(dom, model) {
+  window.CalendarWidget = function(dom, width, model) {
     var self = this;
+    var size = 140;
+    var columns = $.map(model.rows, function(r) { return r.columns; });
+
     self._dom = dom;
+    self._width = width;
     self._model = model;
     self._blank = $($.render.calendarWidgetMain(model));
     self._blank.find(".table-row").each(function(i, e) {
-      $(e).css("top", i * 200 + "px").css("height", "200px");
+      $(e).css("top", i * size + "px").css("height", size + "px");
     });
-    self._dom.html(self._blank).css("height", model.rows.length * 200);
+    self._boxes = self._blank.find(".box");
+    self._boxes.each(function(i, e) {
+      $(e).data("idx", i.toString()).data("model", columns[i]);
+    });
+    self._dom.html(self._blank).css("height", model.rows.length * size);
     self._rows = dom.find('.table-grid tbody').map(function(i, m) {
       return new EntryRowSet($(m), null, null);
     });
-
+    new CalendarSelectionManager(dom, self._boxes);
   };
 
   window.CalendarWidget.prototype.add = function(entryModel) {
     var self = this;
-    var width = 7;
-    var row = (entryModel.s / width) | 0;
-    var s = entryModel.s;
-    var e = entryModel.e;
-    while (row <= (entryModel.e / width | 0)) {
+    var row = (entryModel.s / self._width) | 0;
+    var s = entryModel.s - row * self._width;
+    var e = entryModel.e - row * self._width;
+    while (row <= (entryModel.e / self._width | 0)) {
       var model = $.extend({}, entryModel);
       model.s = Math.max(s, 0);
-      model.e = Math.min(e, width - 1);
+      model.e = Math.min(e, self._width - 1);
       self._rows[row].add(model);
-      s -= width;
-      e -= width;
+      s -= self._width;
+      e -= self._width;
       row++;
     }
   };
+
+  window.CalendarSelectionManager = function(dom, boxes) {
+    var self = this;
+
+    function refresh(selection) {
+      var selected = $();
+      var s = selection.startIndex;
+      var e = selection.endIndex;
+      if (s > e) {
+        s = selection.endIndex;
+        e = selection.startIndex;
+      }
+      for (var i = s; i <= e; ++i) {
+        selected = selected.add(boxes[i]);
+      }
+      $(boxes).removeClass('selected');
+      selected.addClass('selected');
+    }
+
+    var selection = null;
+    dom.on('mousedown', '.box', function(e) {
+      var idx = parseInt($(this).data('idx'));
+      selection = {
+        startIndex: idx,
+        endIndex: idx,
+        startBox: $(this),
+        endBox: null
+      };
+      refresh(selection);
+    });
+    dom.on('mousemove', '.box', function(e) {
+      if (selection != null) {
+        var idx = parseInt($(this).data('idx'));
+        if (selection.endIndex != idx) {
+          selection.endIndex = idx;
+          selection.endBox = $(this);
+          refresh(selection);
+        }
+      }
+    });
+    dom.on('mouseup', '.box', function(e) {
+      if (selection != null) {
+        var idx = parseInt($(this).data('idx'));
+        selection.endIndex = idx;
+        selection.endBox = $(this);
+        refresh(selection);
+        dom.trigger('cw:selected', $.extend(selection, {
+          startModel: selection.startBox.data("model"),
+          endModel: selection.endBox.data("model")
+        }));
+        selection = null;
+      }
+    });
+  }
 })(jQuery);
