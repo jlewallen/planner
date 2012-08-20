@@ -12,6 +12,7 @@
       ending: ending,
       todays: todays,
       classes: classes,
+      index: 0,
       dom : null,
       spans: []
     };
@@ -38,6 +39,7 @@
         data.years.push(yearModel);
       }
       var periodModel = createPeriod(day, period);
+      periodModel.index = data.periods.length;
       yearModel.periods.push(periodModel);
       yearModel.map[periodModel.key] = periodModel;
       data.periodsByKey[periodModel.key] = periodModel;

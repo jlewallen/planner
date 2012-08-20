@@ -75,14 +75,48 @@
     };
     var dom = $('#calendarWidget');
     var widget = new CalendarWidget(dom, width, model);
-    widget.add({ s:  1, e:  1, text: '#777777', border: '#B3DC6C', color: '#EAF5DC', title: 'Jacob' });
-    widget.add({ s:  2, e:  2, text: '#777777', border: '#B3DC6C', color: '#EAF5DC', title: 'Andy' });
-    widget.add({ s:  3, e:  4, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Tomi' });
-    widget.add({ s: 11, e: 15, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Tomi' });
     dom.on("cw:selected", function(e, data) {
-      widget.add({ s: data.startIndex, e: data.endIndex, text: '#1d1d1d', border: '#93C00B', color: '#b3dc6c', title: 'Added' });
+      new CreateDialog(data);
+    });
+
+    console.log(model);
+    console.log(years);
+
+    function findPeriodOnOrAfter(date) {
+      var found = [];
+      $.each(years.periods, function(i, k) {
+        if (k.starting.toDate().isBefore(date) || k.starting.toDate().equals(date)) {
+          found.push(k);
+        }
+      });
+      return found[found.length - 1];
+    }
+
+    var data = $('#data').text().trim();
+    var lines = data.split("\n");
+    $.each(lines, function(i, line) {
+      var fields = line.split("\t");
+      var dates = fields[2].split("-");
+      var name = fields[0];
+      var starting = findPeriodOnOrAfter(Date.parse(dates[0]));
+      var ending = findPeriodOnOrAfter(Date.parse(dates[1]));
+      console.log(name, dates, starting, ending);
+      widget.add({ s: starting.index, e: ending.index, title: name });
     });
   });
+  </script>
+
+  <script type="application/foo" id="data">
+Borrowed	 Enabled	 2011/01/07 - 2042/01/01
+Core	 Enabled	 2011/01/07 - 2042/01/01
+Home	 Enabled	 2012/05/01 - 2013/02/01
+LA	 Enabled	 2012/08/01 - 2013/08/01
+Loan #1	 Enabled	 2012/05/01 - 2012/08/01
+Loan #2	 Enabled	 2012/08/01 - 2013/08/01
+Loan #3	 Enabled	 2013/08/01 - 2042/01/01
+Renting	 Enabled	 2011/01/07 - 2012/05/01
+Saving #1	 Enabled	 2012/05/01 - 2014/01/01
+Saving #2	 Enabled	 2014/01/01 - 2042/01/01
   </script>
   </body>
 </html>
