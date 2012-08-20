@@ -18,6 +18,35 @@
     <div id="planner"> </div>
     <div id="calendarWidget"> </div>
   </div>
+
+  <script type="text/javascript">
+(function($) {
+  $.templates({
+    applicationCreateDialog: "<div class='create-dialog'>Hello, world!</div>",
+  });
+
+  window.CreateDialog = function(selection) {
+    var self = this;
+
+    var dialog = $($.render.applicationCreateDialog(selection)).dialog({
+      title: 'Create',
+      modal: true,
+      position: [300,200],
+      width: 600,
+      height: 400,
+      buttons: {
+        Cancel: function() {
+          dialog.dialog('close');
+        },
+        Ok: function() {
+          dialog.dialog('close');
+        }
+      }
+    });
+  }
+
+})(jQuery);
+  </script>
   
   <script type="text/javascript">
   $(function() {
