@@ -6,7 +6,7 @@
     var todays = Date.today().between(starting.toDate(), moment(ending).add({days:-1}).toDate());
     var classes = todays ? "period todays" : "period";
     return {
-      title: day.format('MMMM DD YYYY'),
+      title: day.format('MMM DD'),
       key: day.format('YYYY/MM/DD'),
       starting: starting,
       ending: ending,
@@ -46,6 +46,16 @@
       data.periods.push(periodModel);
       day = moment(day).add(period);
     }
+
+    data.findPeriodOnOrAfter = function(date) {
+      var found = [];
+      $.each(this.periods, function(i, k) {
+        if (k.starting.toDate().isBefore(date) || k.starting.toDate().equals(date)) {
+          found.push(k);
+        }
+      });
+      return found[found.length - 1];
+    };
 
     return data;
   };

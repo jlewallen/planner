@@ -1,3 +1,4 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
     <link rel="stylesheet" href="bootstrap.min.css">
@@ -11,86 +12,37 @@
     <script src="periods.js"></script>
     <script src="planner.js"></script>
     <script src="calendar.js"></script>
+    <script src="mini-planner.js"></script>
   </head>
   <body>
 
   <div class="container">
-    <div id="planner"> </div>
-    <div id="calendarWidget"> </div>
+    <h2>Welcome</h2>
+
+    <div id="planner">
+      <table>
+      </table>
+    </div>
   </div>
 
-  <script type="text/javascript">
-(function($) {
-  $.templates({
-    applicationCreateDialog: "<div class='create-dialog'>Hello, world!</div>",
-  });
-
-  window.CreateDialog = function(selection) {
-    var self = this;
-
-    var dialog = $($.render.applicationCreateDialog(selection)).dialog({
-      title: 'Create',
-      modal: true,
-      position: [300,200],
-      width: 600,
-      height: 400,
-      buttons: {
-        Cancel: function() {
-          dialog.dialog('close');
-        },
-        Ok: function() {
-          dialog.dialog('close');
-        }
-      }
-    });
-  }
-
-})(jQuery);
-  </script>
-  
   <script type="text/javascript">
   $(function() {
     var starting = Date.parse('1/7/2011');
     var ending = Date.parse('1/1/2015');
     var period = { days: 14 };
     var years = Periods.createYears(starting, ending, period);
-    var width = 7;
 
-    var rows = [];
-    for (var i = 0; i * width < years.periods.length; ++i) {
-      var periods = years.periods.slice(i * width, i * width + width);
-      var columns = periods.map(function(p) {
-        return p;
-      })
-      while (columns.length < width) {
-        columns.push({
-          title: ''
-        });
-      }
-      rows.push({ columns: columns });
-    }
-
-    var model = {
-      rows: rows
-    };
-    var dom = $('#calendarWidget');
-    var widget = new CalendarWidget(dom, width, model);
-    dom.on("cw:selected", function(e, data) {
-      new CreateDialog(data);
+    $.each(years.years, function(i, year) {
+      year.rows = [
+        $.extend({}, year),
+        $.extend({}, year)
+      ];
+      year.rows[0].periods = year.rows[0].periods.slice(0, 13);
+      year.rows[1].periods = year.rows[1].periods.slice(13);
+      year.rows[1].title = '';
     });
 
-    console.log(model);
-    console.log(years);
-
-    function findPeriodOnOrAfter(date) {
-      var found = [];
-      $.each(years.periods, function(i, k) {
-        if (k.starting.toDate().isBefore(date) || k.starting.toDate().equals(date)) {
-          found.push(k);
-        }
-      });
-      return found[found.length - 1];
-    }
+    var planner = new MiniPlanner($('#planner'), years);
 
     var data = $('#data').text().trim();
     var lines = data.split("\n");
@@ -98,11 +50,12 @@
       var fields = line.split("\t");
       var dates = fields[2].split("-");
       var name = fields[0];
-      var starting = findPeriodOnOrAfter(Date.parse(dates[0]));
-      var ending = findPeriodOnOrAfter(Date.parse(dates[1]));
-      console.log(name, dates, starting, ending);
-      widget.add({ s: starting.index, e: ending.index, title: name });
+      var starting = years.findPeriodOnOrAfter(Date.parse(dates[0]));
+      var ending = years.findPeriodOnOrAfter(Date.parse(dates[1]));
+      console.log(name, dates, starting.index, ending.index, starting, ending);
+      planner.addEntry({ s: starting.index, e: ending.index });
     });
+
   });
   </script>
 

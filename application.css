@@ -10,103 +10,46 @@ body {
   width: 1240px;
 }
 
-.planner {
-  clear: both;
+.planner-container {
+  border-bottom: 1px solid #DDD;
   height: 100%;
+  position: relative;
 }
 
-.planner .year {
+.planner {
 }
 
-.planner .year > .title {
-  font-weight: bold;
-  display: inline-block;
-  width: 140px;
-  float: left;
-  margin-bottom: 4px;
-  margin-right: 4px;
-  border: 1px solid #ffffff;
-}
-
-.planner .year > .title {
-  font-weight: bold;
-}
-
-.planner .period {
-  display: inline-block;
-  float: left;
-  width: 140px;
-  height: 140px;
-  border: 1px solid #adadad;
-  margin-bottom: 4px;
-  margin-right: 4px;
-
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.planner .period.selected {
-  background: #ddf;
-  font-weight: bold;
-}
-
-.planner .period.todays {
-  background: #ffa;
-}
-
-.planner .period > .title {
-  font-size: 12px;
-  margin: 2px;
-}
-
-.popup {
-  border: 1px solid #adadad;
-  background: #fff;
-  position: absolute;
-  width: 200px;
-  opacity: 0.9;
-  padding: 4px;
-}
-
-.planner .entry {
-  background: #addfda;
-  border-width: 1px 0;
-  background-color: #3366CC;
-  border-color: #3366CC;
-  color: #FFFFFF;
-  border-style: solid;
-  font-size: 0.85em;
-  
-}
-
-.entry .title {
-  margin-left: 2px;
-}
-
-
-/* Table Approach (a la Google Calendar) */
-
-.calendar-widget .table-row {
+.planner .year-row {
   position: absolute;
   left: 0;
   width: 100%;
   overflow: hidden;
 }
 
-.calendar-widget div, .calendar-widget td {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+.planner table {
+  width: 100%;
+  font-size: 10pt;
+  font-family: Arial,sans-serif;
 }
 
-.calendar-widget .table-main {
+.planner table.background th {
+  border: 1px #ddd solid;
+}
+
+.planner table.background td, .planner table.labels td {
+  height: 80px;
+}
+
+.planner table.background td {
+  border: 1px #ddd solid;
+}
+
+.planner table.labels td span {
+  display: inline-block;
+  padding: 0px 0px 4px 4px;
+}
+
+.planner table.background {
   position: absolute;
   top: 0;
   left: 0;
@@ -116,139 +59,53 @@ body {
   border-spacing: 0px;
 }
 
-.calendar-widget .table-grid {
+.planner table.labels {
   position: relative;
   table-layout: fixed;
   width: 100%;
 }
 
-.calendar-widget .empty-cell {
+.planner table.labels th {
+  font-size: 12pt;
 }
 
-.calendar-widget .box {
-  border-left: 1px solid #DDD;
+.planner table.labels td {
+  font-size: 8pt;
+  vertical-align: bottom;
 }
 
-.calendar-widget .box.selected {
-  background: #ddf;
-  font-weight: bold;
+.planner table.entries {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 0px;
 }
 
-.calendar-widget .st-dtitle {
-  border-left: 1px solid #DDD;
-  border-top: 1px solid #DDD;
-  color: #222;
-  padding: 4px 9px 0;
-  line-height: 16px;
+.planner table.entries tr {
   overflow: hidden;
-  -moz-transform: all .218s;
-  -webkit-transform: all .218s;
-}
-
-.calendar-widget .st-dtitle {
-  padding: 0 4px;
-}
-
-.calendar-widget .st-c {
   vertical-align: top;
 }
 
-.calendar-widget .st-c-pos {
-  position: relative;
+.planner table.entries .fill {
+height: 100%;
 }
 
-.calendar-widget .st-c-pos {
-  padding: 1px 1px 0 2px;
-  font-family: Arial,sans-serif;
-  cursor: pointer;
-}
-
-.calendar-widget .st-ad-ml, .st-ad-ml2 {
-  border: 0 solid black;
-  border-width: 10px 6px 10px 0;
-  position: absolute;
-  top: -1px;
-  left: -7px;
-}
-
-.calendar-widget .st-ad-ml {
-  border-width: 9px 6px 9px 0;
-}
-
-.calendar-widget .rb-n {
-  padding: 3px 10px;
-  white-space: nowrap;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-}
-
-.calendar-widget .eui-s .rb-n {
-  padding: 2px 10px;
-}
-
-.calendar-widget .st-c .te, .st-c .rb-n {
-  cursor: pointer;
-  height: 14px;
-  line-height: 1.2;
-  padding: 2px 9px;
-  -moz-transform: all .218s;
-  -webkit-transform: all .218s;
-}
-
-.calendar-widget .st-c .te, .st-c .rb-n {
-  cursor: pointer;
-  line-height: 1.2;
-}
-
-.calendar-widget .rb-ni {
+.planner table.entries td {
   overflow: hidden;
+  vertical-align: top;
 }
 
-.calendar-widget table {
-  font-size: 12px;
-  line-height: 14px;
+.planner table.entries .entry {
+  height: 5px;
+  opacity: 0.35;
 }
 
-.calendar-widget .st-ad-mr, .st-ad-mr2 {
-  border: 0 solid black;
-  border-width: 10px 0 10px 6px;
-  position: absolute;
-  top: -1px;
-  right: -7px;
+.planner .background .period.todays {
+  background: #ffa
 }
 
-.calendar-widget .st-ad-mr2 {
-  border-width: 9px 0 9px 6px;
-  top: 0;
-  right: -6px;
-}
-
-.calendar-widget .st-dtitle {
-  padding: 0 4px;
-  white-space: nowrap;
-}
-
-.calendar-widget-container {
-  position: relative;
-  height: 100%;
-}
-
-.calendar-widget {
-  border-top: 1px solid #DDD;
-  border-bottom: 1px solid #DDD;
-  border-right: 1px solid #DDD;
-  height: 100%;
-  /*
-  width: 100%;
-  top: 0;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  */
-}
-
-/* Application Styling */
-
-.calendar-widget .box.todays {
-  background: #ffa;
+.planner table.entries .entry {
 }
