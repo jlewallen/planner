@@ -53,7 +53,7 @@
       var starting = years.findPeriodOnOrAfter(Date.parse(dates[0]));
       var ending = years.findPeriodOnOrAfter(Date.parse(dates[1]));
       console.log(name, dates, starting.index, ending.index, starting, ending);
-      planner.addEntry({ s: starting.index, e: ending.index });
+      planner.addEntry({ key: i, s: starting.index, e: ending.index, title: name });
     });
 
   });

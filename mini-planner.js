@@ -7,7 +7,7 @@
     plannerPeriodBackground: "<td class='{{>classes}}' data-idx='{{>index}}' data-key='{{>key}}'></td>",
     plannerPeriodEntries: "",
     plannerPeriodLabels: "<td class='{{>classes}}'><span>{{>title}}</span></td>",
-    plannerEntryCell: "<div class='entry' style='border: 0px solid #000; color: {{>text}}; background-color: {{>color}}'></div>"
+    plannerEntryCell: "<div data-key='{{>key}}' class='entry' style='border: 0px solid #000; color: {{>text}}; background-color: {{>color}}'><span>{{>title}}</span></div>"
   });
 
   EntryRow = function(dom) {
@@ -105,6 +105,22 @@
       { text: '#1d1d1d', color: '#dbadff' },
       { text: '#1d1d1d', color: '#e1e1e1' }
     ];
+
+    console.log(self._dom);
+
+    self._dom.on('mouseenter', '.entry', function(i, e) {
+      var key = $(this).data("key");
+      self._dom.find(".hover").removeClass("hover");
+      self._dom.find(".entry[data-key='" + key + "']").addClass("hover");
+    });
+    self._dom.on('mouseleave', '.entry', function(i, e) {
+      self._dom.find(".hover").removeClass("hover");
+    });
+    self._dom.on('click', '.entry', function(i, e) {
+      var key = $(this).data("key");
+      self._dom.find(".selected").removeClass("selected");
+      self._dom.find(".entry[data-key='" + key + "']").addClass("selected");
+    });
   }
 
   window.MiniPlanner.prototype.addEntry = function(entryModel) {

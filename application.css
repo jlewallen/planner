@@ -60,6 +60,7 @@ body {
 }
 
 .planner table.labels {
+  pointer-events: none;
   position: relative;
   table-layout: fixed;
   width: 100%;
@@ -70,8 +71,9 @@ body {
 }
 
 .planner table.labels td {
-  font-size: 8pt;
+  pointer-events: none;
   vertical-align: bottom;
+  font-size: 8pt;
 }
 
 .planner table.entries {
@@ -101,6 +103,26 @@ height: 100%;
 .planner table.entries .entry {
   height: 5px;
   opacity: 0.35;
+}
+
+.planner table.entries .entry.hover {
+  opacity: 1.0;
+}
+
+.planner table.entries .entry span {
+  display: none;
+  padding: 2px;
+  font-size: 9pt;
+  font-weight: bold;
+}
+
+.planner table.entries .entry.selected span {
+  display: inline-block;
+}
+
+.planner table.entries .entry.selected {
+  height: 20px;
+  opacity: 1.0;
 }
 
 .planner .background .period.todays {
