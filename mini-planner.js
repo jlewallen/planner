@@ -1,13 +1,14 @@
 (function() {
 
   $.templates({
-    plannerMain: "<div class='planner-container'><div class='planner'>{{for years tmpl='plannerYear' /}}</div></div>",
+    plannerMain: "<div class='planner-main'><div class='left'>{{if true tmpl='plannerLeft'/}}</div><div class='planner-container'><div class='planner'>{{for years tmpl='plannerYear' /}}</div></div></div>",
     plannerYear: "{{for rows tmpl='plannerYearRow' /}}",
     plannerYearRow: "<div class='year-row'><table cellpadding='0' cellspacing='0' class='background'><tr><td></td>{{for periods tmpl='plannerPeriodBackground' /}}</tr></table><table cellpadding='0' cellspacing='0' class='entries'>{{for periods tmpl='plannerPeriodEntries' /}}</table><table cellpadding='0' cellspacing='0' class='labels'><tr><th>{{>title}}</th>{{for periods tmpl='plannerPeriodLabels' /}}</tr></table></div>",
     plannerPeriodBackground: "<td class='{{>classes}}' data-idx='{{>index}}' data-key='{{>key}}'></td>",
     plannerPeriodEntries: "",
     plannerPeriodLabels: "<td class='{{>classes}}'><span>{{>title}}</span></td>",
-    plannerEntryCell: "<div data-key='{{>key}}' class='entry' style='border: 0px solid #000; color: {{>text}}; background-color: {{>color}}'><span>{{>title}}</span></div>"
+    plannerEntryCell: "<div data-key='{{>key}}' class='entry' style='border: 0px solid #000; color: {{>text}}; background-color: {{>color}}'><span>{{>title}}</span></div>",
+    plannerLeft: "<table><tr><th>Name</th></tr><tr><td>Core</td></tr><tr><td>Borrowed</td></tr></table>"
   });
 
   EntryRow = function(dom) {

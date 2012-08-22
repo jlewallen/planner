@@ -10,7 +10,16 @@ body {
   width: 1240px;
 }
 
+.planner-main {
+  margin-top: 20px;
+}
+
+.planner-main .left {
+  float: left;
+}
+
 .planner-container {
+  margin-left: 200px;
   border-bottom: 1px solid #DDD;
   height: 100%;
   position: relative;
