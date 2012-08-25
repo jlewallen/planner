@@ -11,15 +11,9 @@ body {
 }
 
 .planner {
-  margin-top: 20px;
-}
-
-.planner .left {
-  float: left;
 }
 
 .planner .planner-main-wrapper {
-  margin-left: 200px;
   border-bottom: 1px solid #DDD;
   position: relative;
 }
@@ -113,18 +107,20 @@ body {
   opacity: 0.35;
 }
 
-.planner .planner-main table.entries .entry.hover {
-  opacity: 1.0;
-}
-
 .planner .planner-main table.entries .entry span {
   display: none;
   padding: 2px;
   font-size: 9pt;
   font-weight: bold;
+  cursor: pointer;
 }
 
-.planner .planner-main table.entries .entry.selected span {
+.planner .planner-main table.entries .entry.hover {
+  opacity: 0.8;
+  height: 20px;
+}
+
+.planner .planner-main table.entries .entry.hover span {
   display: inline-block;
 }
 
@@ -133,9 +129,23 @@ body {
   opacity: 1.0;
 }
 
+.planner .planner-main table.entries .entry.selected span {
+  display: inline-block;
+}
+
 .planner .planner-main .background .period.todays {
   background: #ffa
 }
 
 .planner .planner-main table.entries .entry {
+}
+
+
+#left {
+  float: left;
+  width: 290px;
+}
+
+#planner {
+  margin-left: 300px;
 }

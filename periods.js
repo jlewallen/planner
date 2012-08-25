@@ -50,10 +50,23 @@
     data.findPeriodOnOrAfter = function(date) {
       var found = [];
       $.each(this.periods, function(i, k) {
+        if (k.starting.toDate().isAfter(date) || k.starting.toDate().equals(date)) {
+          found.push(k);
+        }
+      });
+      return found[0];
+    };
+
+    data.findPeriodOnOrBefore = function(date) {
+      var found = [];
+      $.each(this.periods, function(i, k) {
         if (k.starting.toDate().isBefore(date) || k.starting.toDate().equals(date)) {
           found.push(k);
         }
       });
+      if (found.length == 0) {
+        return this.periods[this.periods.length - 1];
+      }
       return found[found.length - 1];
     };
 

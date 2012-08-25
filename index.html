@@ -1,27 +1,46 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
+<html lang="en">
   <head>
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="application.css">
+    <meta charset="utf-8">
     <link rel="stylesheet" href="jquery-ui/css/smoothness/jquery-ui-1.8.23.custom.css">
+    <link rel="stylesheet" href="bootstrap.css">
+    <link rel="stylesheet" href="application.css">
     <script src="jquery-1.8.0.min.js"></script>
     <script src="jquery-ui/js/jquery-ui-1.8.23.custom.min.js"></script>
+    <script src="jquery.to_json.js"></script>
+    <script src="js/3p/jquery.validate.min.js"></script>
     <script src="date.js"></script>
     <script src="moment.js"></script>
     <script src="jsrender.js"></script>
     <script src="periods.js"></script>
-    <script src="planner.js"></script>
-    <script src="calendar.js"></script>
     <script src="mini-planner.js"></script>
+    <script src="budgets.js"></script>
+
+    <title>Planner Widget</title>
   </head>
   <body>
 
   <div class="container">
     <h2>Welcome</h2>
+    <div id="left">
+      <div id="listing">
+        <table>
+          <tr>
+            <th>
+              Name
+            </th>
+            <th>
+              Rows
+            </th>
+          </tr>
+        </table>
+      </div>
+      <div id="details">
+        <button class="btn btn-primary budget-new">New Budget</button>
+      </div>
+    </div>
 
     <div id="planner">
-      <table>
-      </table>
     </div>
   </div>
 
@@ -46,16 +65,78 @@
 
     var data = $('#data').text().trim();
     var lines = data.split("\n");
+    var entries = [];
     $.each(lines, function(i, line) {
       var fields = line.split("\t");
       var dates = fields[2].split("-");
       var name = fields[0];
       var starting = years.findPeriodOnOrAfter(Date.parse(dates[0]));
-      var ending = years.findPeriodOnOrAfter(Date.parse(dates[1]));
-      console.log(name, dates, starting.index, ending.index, starting, ending);
-      planner.addEntry({ key: i, s: starting.index, e: ending.index, title: name });
+      var ending = years.findPeriodOnOrBefore(Date.parse(dates[1]));
+      entries.push({ key: i, s: starting.index, e: ending.index, title: name });
     });
 
+    entries.sort(function(a, b) {
+      return a.s - b.s;
+    });
+
+    $.each(entries, function(i, entry) {
+      planner.addEntry(entry);
+    });
+
+    $('body').on('planner:selected', function(e, data) {
+      console.log(data);
+    });
+  });
+  </script>
+
+  <script type="text/javascript">
+  var model = { budgets: [] };
+
+  $.templates({
+    budgetListingRow: "<tr>" +
+                        "<td>{{>name}}</td>" +
+                        "<td></td>" +
+                        "<td><a href='javascript:void(0)' class='row-remove'>X</a></td>" +
+                      "</tr>",
+    budgetListing: "<table class='table table-condensed'>" +
+                     "<tr><th>Name</th><th>When</th><th></th></tr>" +
+                     "{{for budgets tmpl='budgetListingRow' /}}" +
+                   "</table>"
+  });
+
+  $('#listing').html($.render.budgetListing(model));
+
+  $('body').on('budget:added', function(e, budgetModel) {
+    console.log(budgetModel);
+    model.budgets.push(budgetModel);
+    $('#listing').html($.render.budgetListing(model));
+  });
+
+  $('body').on('click', '.budget-new', function() {
+    var model = {
+      name: 'Core',
+      path: '',
+      starting: '1/1/2011',
+      ending: '1/1/2012',
+      rows: [
+        {
+          name: 'Home::Insurance',
+          value: 1000,
+          schedule: { basis: 'yearly' }
+        },
+        {
+          name: 'Home::Mortgage',
+          value: 1000,
+          schedule: { basis: 'monthly' }
+        },
+        {
+          name: 'Borrowed::Floors',
+          value: 2000,
+          schedule: { basis: 'arbitrary' }
+        }
+      ]
+    };
+    new BudgetEditorController($('<div></div>'), model).showModal();
   });
   </script>
 

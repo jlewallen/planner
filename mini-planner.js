@@ -1,14 +1,13 @@
 (function() {
 
   $.templates({
-    plannerMain: "<div class='planner'><div class='left'>{{if true tmpl='plannerLeft'/}}</div><div class='planner-main-wrapper'><div class='planner-main'>{{for years tmpl='plannerYear' /}}</div></div></div>",
+    plannerMain: "<div class='planner'><div class='planner-main-wrapper'><div class='planner-main'>{{for years tmpl='plannerYear' /}}</div></div></div>",
     plannerYear: "{{for rows tmpl='plannerYearRow' /}}",
     plannerYearRow: "<div class='year-row'><table cellpadding='0' cellspacing='0' class='background'><tr><td></td>{{for periods tmpl='plannerPeriodBackground' /}}</tr></table><table cellpadding='0' cellspacing='0' class='entries'>{{for periods tmpl='plannerPeriodEntries' /}}</table><table cellpadding='0' cellspacing='0' class='labels'><tr><th>{{>title}}</th>{{for periods tmpl='plannerPeriodLabels' /}}</tr></table></div>",
     plannerPeriodBackground: "<td class='{{>classes}}' data-idx='{{>index}}' data-key='{{>key}}'></td>",
     plannerPeriodEntries: "",
     plannerPeriodLabels: "<td class='{{>classes}}'><span>{{>title}}</span></td>",
-    plannerEntryCell: "<div data-key='{{>key}}' class='entry' style='border: 0px solid #000; color: {{>text}}; background-color: {{>color}}'><span>{{>title}}</span></div>",
-    plannerLeft: "<table class='listing'><tr><th>Name</th></tr><tr><td>Core</td></tr><tr><td>Borrowed</td></tr></table><div class='details'></div>"
+    plannerEntryCell: "<div data-key='{{>key}}' class='entry' style='border: 0px solid #000; color: {{>text}}; background-color: {{>color}}'><span>{{>title}}</span></div>"
   });
 
   EntryRow = function(dom) {
@@ -33,7 +32,7 @@
   EntryRow.prototype.fill = function(s, e, model) {
     var self = this;
     var cell = $(self._cells[s]);
-    cell.html($.render.plannerEntryCell(model)).removeClass("empty-cell");
+    cell.html($($.render.plannerEntryCell(model)).data('model', model)).removeClass("empty-cell");
     for (var i = s; i <= e; ++i) {
       if (i != s) {
         $(self._cells[i]).hide();
@@ -65,7 +64,7 @@
       for (var i = 0; i < self._width; ++i) {
         tr = tr.append("<td class='empty-cell'></td>");
       }
-      self._dom.prepend(tr);
+      tr.insertBefore(self._dom.find(".fill"));
       var row = new EntryRow(tr);
       self._rows.push(row);
       return row;
@@ -85,19 +84,12 @@
     self._model = model;
     self._width = 13;
     self._size = 100;
-    self._dom.html($.render.plannerMain(self._model)).find(".planner-main-wrapper").css("height", self._model.years.length * self._size * 2);
-    self._dom.find(".year-row").each(function(i, e) {
-      $(e).css("top", i * self._size + "px").css("height", self._size + "px");
-    });
-    self._rows = self._dom.find('table.entries').map(function(i, m) {
-      return new EntryRowSet($(m), self._width);
-    });
     self._styles = [
-      { text: '#1d1d1d', color: '#5484ed' },
+      { text: '#ffffff', color: '#5484ed' },
       { text: '#1d1d1d', color: '#a4bdfc' },
       { text: '#1d1d1d', color: '#46d6db' },
       { text: '#1d1d1d', color: '#7ae7bf' },
-      { text: '#1d1d1d', color: '#51b749' },
+      { text: '#ffffff', color: '#51b749' },
       { text: '#1d1d1d', color: '#fbd75b' },
       { text: '#1d1d1d', color: '#ffb878' },
       { text: '#1d1d1d', color: '#ff887c' },
@@ -107,20 +99,36 @@
       { text: '#1d1d1d', color: '#e1e1e1' }
     ];
 
-    console.log(self._dom);
+    self._dom.html($.render.plannerMain(self._model)).find(".planner-main-wrapper").css("height", self._model.years.length * self._size * 2);
+    self._dom.find(".year-row").each(function(i, e) {
+      $(e).css("top", i * self._size + "px").css("height", self._size + "px");
+    });
+    self._rows = self._dom.find('table.entries').map(function(i, m) {
+      return new EntryRowSet($(m), self._width);
+    });
+    self.bind();
+  }
 
+  window.MiniPlanner.prototype.bind = function() {
+    var self = this;
     self._dom.on('mouseenter', '.entry', function(i, e) {
       var key = $(this).data("key");
+      var model = $(this).data('model');
       self._dom.find(".hover").removeClass("hover");
       self._dom.find(".entry[data-key='" + key + "']").addClass("hover");
+      self._dom.trigger("planner:hover-on", model);
     });
     self._dom.on('mouseleave', '.entry', function(i, e) {
+      var model = $(this).data('model');
       self._dom.find(".hover").removeClass("hover");
+      self._dom.trigger("planner:hover-off", model);
     });
     self._dom.on('click', '.entry', function(i, e) {
       var key = $(this).data("key");
+      var model = $(this).data('model');
       self._dom.find(".selected").removeClass("selected");
       self._dom.find(".entry[data-key='" + key + "']").addClass("selected");
+      self._dom.trigger("planner:selected", model);
     });
   }
 
