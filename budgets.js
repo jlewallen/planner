@@ -49,7 +49,7 @@
       e.preventDefault();
       if (self._dom.find("form.detail").validate({ errorPlacement: function() { } }).form()) {
         var row = $(this).parents("form").toJSON();
-        self._dom.find("table.detail").append($.render.editorRow(row));
+        self._dom.find("table.detail").append($.render.budgetEditorRow(row));
         self._model.rows.push(row);
       }
     });

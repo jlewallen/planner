@@ -61,24 +61,19 @@
       year.rows[1].title = '';
     });
 
+    function addEntryBetweenDates(model) {
+      var entryModel = $.extend({
+        startingPeriod: years.findPeriodOnOrAfter(model.starting),
+        endingPeriod: years.findPeriodOnOrBefore(model.ending)
+      }, model);
+      entries.push(entryModel);
+    }
+
     var planner = new MiniPlanner($('#planner'), years);
-
-    var data = $('#data').text().trim();
-    var lines = data.split("\n");
     var entries = [];
-    $.each(lines, function(i, line) {
-      var fields = line.split("\t");
-      var dates = fields[2].split("-");
-      var name = fields[0];
-      var starting = years.findPeriodOnOrAfter(Date.parse(dates[0]));
-      var ending = years.findPeriodOnOrBefore(Date.parse(dates[1]));
-      entries.push({ key: i, s: starting.index, e: ending.index, title: name });
-    });
-
     entries.sort(function(a, b) {
       return a.s - b.s;
     });
-
     $.each(entries, function(i, entry) {
       planner.addEntry(entry);
     });
@@ -93,7 +88,7 @@
   var model = { budgets: [] };
 
   $.templates({
-    budgetListingRow: "<tr>" +
+    budgetListingRow: "<tr data-key='{{>name}}'>" +
                         "<td>{{>name}}</td>" +
                         "<td></td>" +
                         "<td><a href='javascript:void(0)' class='row-remove'>X</a></td>" +
@@ -106,9 +101,24 @@
 
   $('#listing').html($.render.budgetListing(model));
 
+  $('#listing').on('click', 'tr', function() {
+    var key = $(this).closest('[data-key]').data('key');
+    var budgetModel = $.grep(model.budgets, function(r) { return r.name == key; })[0];
+    new BudgetEditorController($('<div></div>'), budgetModel).showModal();
+  });
+
+  $('#listing').on('click', '.row-remove', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var key = $(this).closest('[data-key]').data('key');
+    model.budgets = $.grep(model.budgets, function(r) { return r.name != key; });
+    $('#listing').html($.render.budgetListing(model));
+  });
+
   $('body').on('budget:added', function(e, budgetModel) {
-    console.log(budgetModel);
-    model.budgets.push(budgetModel);
+    if ($.inArray(budgetModel, model.budgets) == -1) {
+      model.budgets.push(budgetModel);
+    }
     $('#listing').html($.render.budgetListing(model));
   });
 
@@ -116,19 +126,6 @@
     var blank = { rows: [] };
     new BudgetEditorController($('<div></div>'), blank).showModal();
   });
-  </script>
-
-  <script type="application/foo" id="data">
-Borrowed	 Enabled	 2011/01/07 - 2042/01/01
-Core	 Enabled	 2011/01/07 - 2042/01/01
-Home	 Enabled	 2012/05/01 - 2013/02/01
-LA	 Enabled	 2012/08/01 - 2013/08/01
-Loan #1	 Enabled	 2012/05/01 - 2012/08/01
-Loan #2	 Enabled	 2012/08/01 - 2013/08/01
-Loan #3	 Enabled	 2013/08/01 - 2042/01/01
-Renting	 Enabled	 2011/01/07 - 2012/05/01
-Saving #1	 Enabled	 2012/05/01 - 2014/01/01
-Saving #2	 Enabled	 2014/01/01 - 2042/01/01
   </script>
   </body>
 </html>
