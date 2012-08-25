@@ -113,29 +113,6 @@
   });
 
   $('body').on('click', '.budget-new', function() {
-    var model = {
-      name: 'Core',
-      path: '',
-      starting: '1/1/2011',
-      ending: '1/1/2012',
-      rows: [
-        {
-          name: 'Home::Insurance',
-          value: 1000,
-          schedule: { basis: 'yearly' }
-        },
-        {
-          name: 'Home::Mortgage',
-          value: 1000,
-          schedule: { basis: 'monthly' }
-        },
-        {
-          name: 'Borrowed::Floors',
-          value: 2000,
-          schedule: { basis: 'arbitrary' }
-        }
-      ]
-    };
     var blank = { rows: [] };
     new BudgetEditorController($('<div></div>'), blank).showModal();
   });
