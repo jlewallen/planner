@@ -149,3 +149,20 @@ body {
 #planner {
   margin-left: 300px;
 }
+
+.form-horizontal label.error {
+  float: right;
+}
+
+.form-inline label.error {
+  display: inline-block;
+}
+
+label.error {
+  font-size: 8pt;
+}
+
+input.error {
+  border: 1px solid #ff3333;
+}
+

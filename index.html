@@ -136,7 +136,8 @@
         }
       ]
     };
-    new BudgetEditorController($('<div></div>'), model).showModal();
+    var blank = { rows: [] };
+    new BudgetEditorController($('<div></div>'), blank).showModal();
   });
   </script>
 
