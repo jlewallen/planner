@@ -10,55 +10,49 @@ body {
   width: 1240px;
 }
 
-.planner-main {
+.planner {
   margin-top: 20px;
 }
 
-.planner-main .left {
+.planner .left {
   float: left;
 }
 
-.planner-container {
+.planner .planner-main-wrapper {
   margin-left: 200px;
   border-bottom: 1px solid #DDD;
-  height: 100%;
   position: relative;
 }
 
 .planner {
 }
 
-.planner .year-row {
+.planner .planner-main .year-row {
   position: absolute;
   left: 0;
   width: 100%;
   overflow: hidden;
 }
 
-.planner table {
+.planner .planner-main table {
   width: 100%;
   font-size: 10pt;
   font-family: Arial,sans-serif;
 }
 
-.planner table.background th {
+.planner .planner-main table.background th {
   border: 1px #ddd solid;
 }
 
-.planner table.background td, .planner table.labels td {
-  height: 80px;
+.planner .planner-main table.background td, .planner table.labels td {
+  height: 100px;
 }
 
-.planner table.background td {
+.planner .planner-main table.background td {
   border: 1px #ddd solid;
 }
 
-.planner table.labels td span {
-  display: inline-block;
-  padding: 0px 0px 4px 4px;
-}
-
-.planner table.background {
+.planner .planner-main table.background {
   position: absolute;
   top: 0;
   left: 0;
@@ -68,24 +62,29 @@ body {
   border-spacing: 0px;
 }
 
-.planner table.labels {
+.planner .planner-main table.labels {
   pointer-events: none;
   position: relative;
   table-layout: fixed;
   width: 100%;
 }
 
-.planner table.labels th {
+.planner .planner-main table.labels th {
   font-size: 12pt;
 }
 
-.planner table.labels td {
+.planner .planner-main table.labels td {
   pointer-events: none;
-  vertical-align: bottom;
+  vertical-align: top;
   font-size: 8pt;
 }
 
-.planner table.entries {
+.planner .planner-main table.labels td span {
+  display: inline-block;
+  padding: 4px 0px 0px 4px;
+}
+
+.planner .planner-main table.entries {
   position: absolute;
   top: 0;
   left: 0;
@@ -93,50 +92,50 @@ body {
   width: 100%;
   table-layout: fixed;
   border-spacing: 0px;
+  margin-top: 20px;
 }
 
-.planner table.entries tr {
+.planner .planner-main table.entries tr {
+  overflow: hidden;
+}
+
+.planner .planner-main table.entries .fill {
+  height: 100%;
+}
+
+.planner .planner-main table.entries td {
   overflow: hidden;
   vertical-align: top;
 }
 
-.planner table.entries .fill {
-height: 100%;
-}
-
-.planner table.entries td {
-  overflow: hidden;
-  vertical-align: top;
-}
-
-.planner table.entries .entry {
+.planner .planner-main table.entries .entry {
   height: 5px;
   opacity: 0.35;
 }
 
-.planner table.entries .entry.hover {
+.planner .planner-main table.entries .entry.hover {
   opacity: 1.0;
 }
 
-.planner table.entries .entry span {
+.planner .planner-main table.entries .entry span {
   display: none;
   padding: 2px;
   font-size: 9pt;
   font-weight: bold;
 }
 
-.planner table.entries .entry.selected span {
+.planner .planner-main table.entries .entry.selected span {
   display: inline-block;
 }
 
-.planner table.entries .entry.selected {
+.planner .planner-main table.entries .entry.selected {
   height: 20px;
   opacity: 1.0;
 }
 
-.planner .background .period.todays {
+.planner .planner-main .background .period.todays {
   background: #ffa
 }
 
-.planner table.entries .entry {
+.planner .planner-main table.entries .entry {
 }
