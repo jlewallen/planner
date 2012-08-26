@@ -134,6 +134,11 @@
     var blank = { rows: [] };
     new BudgetEditorController($('<div></div>'), blank).showModal();
   });
+
+  $(function() {
+    new MiniPlannerSelectionManager($('#planner'), $('#planner').find(".background .period"));
+  });
+
   </script>
   </body>
 </html>

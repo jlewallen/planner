@@ -150,4 +150,85 @@
     self._styles.push(self._styles.shift());
   }
 
+  window.MiniPlannerSelectionManager = function(dom, boxes) {
+    var self = this;
+
+    function refresh(selection) {
+      $(boxes).removeClass('selected');
+      if (selection == null)  {
+        return;
+      }
+      var selected = $();
+      var s = selection.startIndex;
+      var e = selection.endIndex;
+      if (s > e) {
+        s = selection.endIndex;
+        e = selection.startIndex;
+      }
+      for (var i = s; i <= e; ++i) {
+        selected = selected.add(boxes[i]);
+      }
+      selected.addClass('selected');
+    }
+
+    function boxFor(el) {
+      if (el.hasClass('period')) return el;
+      //var i = el.parent().find("td").index(el);
+      //return $(el.closest(".table-row").find(".box").get(i));
+    }
+
+    var selection = null;
+    dom.on('mousedown', '.period', function(e) {
+      var box = boxFor($(this));
+      var idx = parseInt(box.data('idx'));
+      selection = {
+        startIndex: idx,
+        endIndex: idx,
+        startBox: box,
+        endBox: null
+      };
+      refresh(selection);
+    });
+    dom.on('mousemove', '.period', function(e) {
+      if (selection != null) {
+        var box = boxFor($(this));
+        var idx = parseInt(box.data('idx'));
+        if (selection.endIndex != idx) {
+          selection.endIndex = idx;
+          selection.endBox = box;
+          refresh(selection);
+        }
+      }
+    });
+    dom.on('mouseup', '.period', function(e) {
+      if (selection != null) {
+        var box = boxFor($(this));
+        var idx = parseInt(box.data('idx'));
+        selection.endIndex = idx;
+        selection.endBox = box;
+        refresh(selection);
+        if (selection.startIndex > selection.endIndex) {
+          selection = {
+            startIndex: selection.endIndex,
+            endIndex: selection.startIndex,
+            startBox: selection.endBox,
+            endBox: selection.startBox
+          };
+        }
+        dom.trigger('cw:selected', $.extend(selection, {
+          startModel: selection.startBox.data("model"),
+          endModel: selection.endBox.data("model")
+        }));
+        selection = null;
+      }
+    });
+    dom.on('click', '.entry', function(e) {
+      e.stopPropagation();
+    });
+    $('body').live('mouseup', function() {
+      selection = null;
+      refresh(null);
+    });
+  }
+
 })(jQuery);

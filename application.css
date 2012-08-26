@@ -19,6 +19,12 @@ body {
 }
 
 .planner {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .planner .planner-main .year-row {
@@ -82,7 +88,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100%;
+  /*height: 100%;*/
   width: 100%;
   table-layout: fixed;
   border-spacing: 0px;
@@ -134,7 +140,11 @@ body {
 }
 
 .planner .planner-main .background .period.todays {
-  background: #ffa
+  background: #ffa;
+}
+
+.planner .planner-main .background .period.selected {
+  background: #faf;
 }
 
 .planner .planner-main table.entries .entry {
