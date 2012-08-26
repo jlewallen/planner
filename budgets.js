@@ -15,8 +15,8 @@
   $.templates({
     budgetEditorRow: "<tr data-name='{{>name}}'>" +
                        "<td>{{>name}}</td>" + 
-                       "<td>{{>~summarizeSchedule(value, schedule)}}</td>" + 
-                       "<td><a href='javascript:void(0)' class='row-remove'>X</a></td>" + 
+                       "<td class='value'>{{>~summarizeSchedule(value, schedule)}}</td>" + 
+                       "<td class='controls'><a href='javascript:void(0)' class='row-remove'>X</a></td>" + 
                      "</tr>",
     budgetEditor: "<div class='editor'>" + 
                   "<form class='form-horizontal master'>" + 
@@ -25,7 +25,7 @@
                     "<div class='control-group'><label class='control-label'>Ends</label><div class='controls'><input type='text' name='ending' class='date-field' value='{{>ending}}' /></div></div>" +
                     "<div class='control-group'>" +
                     "<table class='table table-condensed detail'>" +
-                      "<tr><th>Name</th><th>Amount</th><th></th></tr>" +
+                      "<tr><th>Name</th><th class='value'>Amount</th><th class='controls'></th></tr>" +
                       "{{for rows tmpl='budgetEditorRow' /}}" +
                     "</table>" +
                     "</div>" +

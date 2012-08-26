@@ -151,15 +151,6 @@ body {
 }
 
 
-#left {
-  float: left;
-  width: 290px;
-}
-
-#planner {
-  margin-left: 300px;
-}
-
 .form-horizontal label.error {
   float: right;
 }
@@ -176,7 +167,31 @@ input.error {
   border: 1px solid #ff3333;
 }
 
+table.detail td.value {
+  width: 180px;
+}
+
+table.detail td.controls {
+  width: 40px;
+}
+
 #listing tr.selected td {
   background: #ffa;
   font-weight: bold;
 }
+
+#listing td.controls {
+  width: 75px;
+}
+
+/* Application */
+
+#left {
+  float: left;
+  width: 290px;
+}
+
+#planner {
+  margin-left: 300px;
+}
+

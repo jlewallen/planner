@@ -23,20 +23,10 @@
   <div class="container">
     <h2>Welcome</h2>
     <div id="left">
+      <button class="btn btn-primary budget-new">New Budget</button>
       <div id="listing">
-        <table>
-          <tr>
-            <th>
-              Name
-            </th>
-            <th>
-              Rows
-            </th>
-          </tr>
-        </table>
       </div>
       <div id="details">
-        <button class="btn btn-primary budget-new">New Budget</button>
       </div>
     </div>
 
@@ -78,6 +68,8 @@
       planner.addEntry(entry);
     });
 
+    new MiniPlannerSelectionManager($('#planner'), $('#planner').find(".background .period"));
+
     $('body').on('planner:selected', function(e, data) {
       console.log(data);
     });
@@ -90,11 +82,10 @@
   $.templates({
     budgetListingRow: "<tr data-key='{{>name}}'>" +
                         "<td>{{>name}}</td>" +
-                        "<td></td>" +
-                        "<td><a href='javascript:void(0)' class='row-modify'>EDIT</a> <a href='javascript:void(0)' class='row-remove'>X</a></td>" +
+                        "<td class='controls'><a href='javascript:void(0)' class='row-modify'>EDIT</a> <a href='javascript:void(0)' class='row-remove'>X</a></td>" +
                       "</tr>",
     budgetListing: "<table class='table table-condensed'>" +
-                     "<tr><th>Name</th><th>When</th><th></th></tr>" +
+                     "<tr><th>Name</th><th class='controls'></th></tr>" +
                      "{{for budgets tmpl='budgetListingRow' /}}" +
                    "</table>"
   });
@@ -134,11 +125,6 @@
     var blank = { rows: [] };
     new BudgetEditorController($('<div></div>'), blank).showModal();
   });
-
-  $(function() {
-    new MiniPlannerSelectionManager($('#planner'), $('#planner').find(".background .period"));
-  });
-
   </script>
   </body>
 </html>
