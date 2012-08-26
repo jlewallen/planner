@@ -21,8 +21,8 @@
     budgetEditor: "<div class='editor'>" + 
                   "<form class='form-horizontal master'>" + 
                     "<div class='control-group'><label class='control-label'>Name</label><div class='controls'><input type='text' name='name' value='{{>name}}' class='required' /></div></div>" +
-                    "<div class='control-group'><label class='control-label'>Starts</label><div class='controls'><input type='text' name='starting' class='date-field required' value='{{>starting}}' /></div></div>" +
-                    "<div class='control-group'><label class='control-label'>Ends</label><div class='controls'><input type='text' name='ending' class='date-field required' value='{{>ending}}' /></div></div>" +
+                    "<div class='control-group'><label class='control-label'>Starts</label><div class='controls'><input type='text' name='starting' class='date-field' value='{{>starting}}' /></div></div>" +
+                    "<div class='control-group'><label class='control-label'>Ends</label><div class='controls'><input type='text' name='ending' class='date-field' value='{{>ending}}' /></div></div>" +
                     "<div class='control-group'>" +
                     "<table class='table table-condensed detail'>" +
                       "<tr><th>Name</th><th>Amount</th><th></th></tr>" +
@@ -83,8 +83,8 @@
           var validation = {
             rules: {
               name: { required: true },
-              starting: { required: true, date: true },
-              ending: { required: true, date: true }
+              starting: { date: true },
+              ending: { date: true }
             }
           };
           if (self._dom.find("form.master").validate(validation).form()) {
