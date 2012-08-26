@@ -91,7 +91,7 @@
     budgetListingRow: "<tr data-key='{{>name}}'>" +
                         "<td>{{>name}}</td>" +
                         "<td></td>" +
-                        "<td><a href='javascript:void(0)' class='row-remove'>X</a></td>" +
+                        "<td><a href='javascript:void(0)' class='row-modify'>EDIT</a> <a href='javascript:void(0)' class='row-remove'>X</a></td>" +
                       "</tr>",
     budgetListing: "<table class='table table-condensed'>" +
                      "<tr><th>Name</th><th>When</th><th></th></tr>" +
@@ -102,6 +102,14 @@
   $('#listing').html($.render.budgetListing(model));
 
   $('#listing').on('click', 'tr', function() {
+    $('#listing').find("tr.selected").removeClass("selected");
+    $(this).closest("tr").addClass('selected');
+    var key = $(this).closest('[data-key]').data('key');
+  });
+
+  $('#listing').on('click', '.row-modify', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
     var key = $(this).closest('[data-key]').data('key');
     var budgetModel = $.grep(model.budgets, function(r) { return r.name == key; })[0];
     new BudgetEditorController($('<div></div>'), budgetModel).showModal();

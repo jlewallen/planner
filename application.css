@@ -166,3 +166,7 @@ input.error {
   border: 1px solid #ff3333;
 }
 
+#listing tr.selected td {
+  background: #ffa;
+  font-weight: bold;
+}
