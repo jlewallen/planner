@@ -215,7 +215,7 @@
             endBox: selection.startBox
           };
         }
-        dom.trigger('cw:selected', $.extend(selection, {
+        dom.trigger('mp:selected', $.extend(selection, {
           startModel: selection.startBox.data("model"),
           endModel: selection.endBox.data("model")
         }));

@@ -35,7 +35,7 @@
   </div>
 
   <script type="text/javascript">
-  $(function() {
+  window.PeriodPlanner = function(dom) {
     var starting = Date.parse('1/7/2011');
     var ending = Date.parse('1/1/2015');
     var period = { days: 14 };
@@ -51,15 +51,7 @@
       year.rows[1].title = '';
     });
 
-    function addEntryBetweenDates(model) {
-      var entryModel = $.extend({
-        startingPeriod: years.findPeriodOnOrAfter(model.starting),
-        endingPeriod: years.findPeriodOnOrBefore(model.ending)
-      }, model);
-      entries.push(entryModel);
-    }
-
-    var planner = new MiniPlanner($('#planner'), years);
+    var planner = new MiniPlanner(dom, years);
     var entries = [];
     entries.sort(function(a, b) {
       return a.s - b.s;
@@ -68,8 +60,28 @@
       planner.addEntry(entry);
     });
 
-    new MiniPlannerSelectionManager($('#planner'), $('#planner').find(".background .period"));
+    console.log(years);
 
+    $('body').on('mp:selected', function(e, data) {
+      $(e.target).trigger("planner:selected", {
+        startPeriod: years.periods[data.startIndex],
+        endPeriod: years.periods[data.endIndex]
+      });
+    });
+
+    new MiniPlannerSelectionManager(dom, dom.find(".background .period"));
+  };
+
+  window.PeriodPlanner.addEntryBetweenDates = function(model) {
+    var entryModel = $.extend({
+      startingPeriod: years.findPeriodOnOrAfter(model.starting),
+      endingPeriod: years.findPeriodOnOrBefore(model.ending)
+    }, model);
+    entries.push(entryModel);
+  }
+
+  $(function() {
+    new PeriodPlanner($('#planner'));
     $('body').on('planner:selected', function(e, data) {
       console.log(data);
     });
