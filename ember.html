@@ -1,0 +1,44 @@
+<html>
+<head>
+<script type="text/javascript" src="jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="http://cloud.github.com/downloads/wycats/handlebars.js/handlebars-1.0.0.beta.6.js"></script>
+<script type="text/javascript" src="http://cloud.github.com/downloads/emberjs/ember.js/ember-latest.js"></script>
+<script type="text/javascript" src="ember-test.js"></script>
+</head>
+<body>
+
+<script type="text/x-handlebars" data-template-name="application">
+  <h1>Ember Committers</h1>
+  {{outlet}}
+</script>
+<script type="text/x-handlebars" data-template-name="contributors">
+    {{#each person in controller}}
+      <a {{action showContributor person}}> {{person.login}} </a>
+    {{/each}}
+</script>
+<script type="text/x-handlebars" data-template-name="a-contributor">
+  <div>
+    <a {{action showAllContributors}}>All Contributors</a>
+  </div>  
+  {{login}} - {{contributions}} contributions to Ember.js
+  <ul>
+    <li><a {{action showDetails}}>Details</a></li>
+    <li><a {{action showRepos}}>Repos</a></li>
+  </ul>
+  <div>
+    {{outlet}}
+  </div>
+</script>
+<script type="text/x-handlebars" data-template-name="contributor-details">
+  <p>{{email}}</p>
+  <p>{{bio}}</p>
+</script>
+<script type="text/x-handlebars" data-template-name="repos">
+  {{#each repo in repos}}
+     {{repo.name}}
+  {{/each}}
+</script>
+
+
+</body>
+</html>
